@@ -63,7 +63,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         books[isbn].reviews = {}; // Initialize the reviews object if not present
       }
       books[isbn].reviews[userName] = review; // Use 'reviews' instead of 'review'
-      return res.send("Review Added Successfully.");
+      return res.status(200).json({ message: `Review for ISBN${isbn} added Successfully.` });
     } else {
       return res.status(400).json({ message: `Review cannot be left blank` });
     }
