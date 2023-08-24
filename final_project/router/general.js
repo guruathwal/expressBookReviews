@@ -24,7 +24,7 @@ public_users.post("/register", (req, res) => {
     } else {
       return res.status(409).json({ message: "Username already exists!" });
     }
-  });
+});
 
 
 // Get the book list available in the shop
