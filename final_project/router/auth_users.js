@@ -62,8 +62,8 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
       if (!books[isbn].reviews) {
         books[isbn].reviews = {}; // Initialize the reviews object if not present
       }
-      books[isbn].reviews[userName] = review; // Use 'reviews' instead of 'review'
-      return res.status(200).json({ message: `Review for ISBN${isbn} added Successfully.` });
+      books[isbn].reviews[userName] = review;
+      return res.status(200).json({ message: `Review for ISBN ${isbn} added by user ${userName}.` });
     } else {
       return res.status(400).json({ message: `Review cannot be left blank` });
     }
@@ -74,6 +74,19 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   }
 });
 
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const userName = req.session.authorization.username;
+    const isbn = req.params.isbn;
+    const review = req.body.review;
+    if (books[isbn]) {
+         delete books[isbn].reviews[userName];
+        return res.status(200).json({ message: `Review for ISBN ${isbn} deleted by user ${userName}.` });
+    } else {
+      return res
+        .status(404)
+        .json({ message: `Book with ISBN ${isbn} not found.` });
+    }
+});
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
